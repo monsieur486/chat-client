@@ -1,0 +1,77 @@
+wx.Frame.__init__(self,
+                          parent,
+                          id=wx.ID_ANY,
+                          title=_(u"Le Tarot des Copains"),
+                          pos=wx.DefaultPosition,
+                          size=wx.Size(1200, 900),
+                          style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+
+        self.protocol = None
+
+        frame_size = self.GetSize()
+        appSettings.card_H = round(frame_size[1] / appSettings.card_C)
+        appSettings.card_L = round(appSettings.card_H / 1.875)
+        appSettings.card_CL = round(appSettings.card_H / 3)
+
+
+#################################################################################
+
+self.cnxTabGamesList = wx.ListCtrl(sbSizer22.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize,
+                                   style=wx.LC_REPORT |
+                                         wx.BORDER_SUNKEN |
+                                         wx.LC_SORT_ASCENDING |
+                                         wx.LC_SINGLE_SEL)
+
+self.cnxTabGamesList.InsertColumn(0, "#")
+self.cnxTabGamesList.InsertColumn(1, _("Joueurs"))
+self.cnxTabGamesList.InsertColumn(2, _("Nom"))
+self.cnxTabGamesList.SetColumnWidth(0, 0)
+self.cnxTabGamesList.SetColumnWidth(1, 80)
+self.cnxTabGamesList.SetColumnWidth(2, 350)
+
+sbSizer22.Add(self.cnxTabGamesList, 1, wx.ALL | wx.EXPAND, 5)
+
+
+#################################################################################
+
+wx.Size(96, 180)-wx.Size(appSettings.card_L, appSettings.card_H)
+
+wx.Size(60, 180)-wx.Size(appSettings.card_CL, appSettings.card_H)
+
+
+#################################################################################
+
+
+
+
+
+# ChienDialog(self, "Dialog").ShowModal()
+
+
+def modifyUserSettings(key, value):
+    from configparser import ConfigParser
+
+    # instantiate
+    config = ConfigParser()
+
+    # parse existing file
+    settingsFile = PublicPath('settings', 'luncher.cfg')
+    config.read(settingsFile)
+
+    # # read values from a section
+    # string_val = config.get('section_a', 'string_val')
+    # bool_val = config.getboolean('section_a', 'bool_val')
+    # int_val = config.getint('section_a', 'int_val')
+    # float_val = config.getfloat('section_a', 'pi_val')
+
+    # # update existing value
+    config.set('LUNCHER', key, value)
+    #
+    # # add a new section and some values
+    # config.add_section('section_b')
+    # config.set('section_b', 'meal_val', 'spam')
+    # config.set('section_b', 'not_found_val', '404')
+
+    # save to a file
+    with open(settingsFile, 'w') as configfile:
+        config.write(configfile)

@@ -1,0 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+from appcore.translate import _
+
+
+def cnxMsg(self, value):
+    msg = value + _(" - Non connecté(e)")
+    self.mainStatusBar.SetStatusText(msg, 0)
+    self.Layout()
