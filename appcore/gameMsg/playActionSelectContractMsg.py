@@ -3,8 +3,6 @@ import wx
 
 import appSettings
 from appcore.translate import _
-from templates.Game4 import Game4
-from templates.Game5 import Game5
 
 
 def boussole(maxPlayer, position, antiHoraire, userPos, playState):
