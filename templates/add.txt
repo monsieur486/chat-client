@@ -1,17 +1,13 @@
-wx.Frame.__init__(self,
-                          parent,
-                          id=wx.ID_ANY,
-                          title=_(u"Le Tarot des Copains"),
-                          pos=wx.DefaultPosition,
-                          size=wx.Size(1200, 900),
-                          style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+class AppFrame(wx.Frame):
+
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"AppPubSub", pos=wx.DefaultPosition,
+                          size=wx.Size(262, 305), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         self.protocol = None
 
-        frame_size = self.GetSize()
-        appSettings.card_H = round(frame_size[1] / appSettings.card_C)
-        appSettings.card_L = round(appSettings.card_H / 1.875)
-        appSettings.card_CL = round(appSettings.card_H / 3)
 
 
 #################################################################################

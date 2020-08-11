@@ -9,7 +9,6 @@ from appcore.display.nbFree4Display import nbFree4Display
 from appcore.display.nbFree5Display import nbFree5Display
 from appcore.display.nbGamesDisplay import nbGamesDisplay
 from appcore.display.nbPlayersDisplay import nbPlayersDisplay
-from appcore.gameMsg.userJoinGameMsg import userJoinGameMsg
 from appcore.translate import _
 
 
