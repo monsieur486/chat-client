@@ -15,13 +15,12 @@ jobs = queue.Queue()
 # Class AppFrame
 ###########################################################################
 
-class AppFrame(wx.Frame):
+class AppFrame ( wx.Frame ):
 
-    def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"AppPubSub", pos=wx.DefaultPosition,
-                          size=wx.Size(262, 305), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+    def __init__( self, parent ):
+        wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"AppPubSub", pos = wx.DefaultPosition, size = wx.Size( 440,341 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
-        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
         self.protocol = None
 
