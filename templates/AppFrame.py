@@ -15,12 +15,13 @@ jobs = queue.Queue()
 # Class AppFrame
 ###########################################################################
 
-class AppFrame ( wx.Frame ):
+class AppFrame(wx.Frame):
 
-    def __init__( self, parent ):
-        wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"AppPubSub", pos = wx.DefaultPosition, size = wx.Size( 440,341 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"AppPubSub", pos=wx.DefaultPosition,
+                          size=wx.Size(440, 636), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
-        self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
         self.protocol = None
 
@@ -36,8 +37,6 @@ class AppFrame ( wx.Frame ):
 
         mainPage = wx.BoxSizer(wx.VERTICAL)
 
-        mainPage.Add((0, 0), 1, wx.EXPAND, 5)
-
         appPage = wx.BoxSizer(wx.HORIZONTAL)
 
         connexionSide = wx.BoxSizer(wx.VERTICAL)
@@ -47,7 +46,10 @@ class AppFrame ( wx.Frame ):
         connexionSide.Add(self.userIcon, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
         self.userLogin = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        connexionSide.Add(self.userLogin, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.userLogin.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_ACTIVECAPTION))
+
+        connexionSide.Add(self.userLogin, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL | wx.EXPAND,
+                          5)
 
         self.pwdIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(u"public/icons/16x16_key.png", wx.BITMAP_TYPE_ANY),
                                        wx.DefaultPosition, wx.DefaultSize, 0)
@@ -55,7 +57,10 @@ class AppFrame ( wx.Frame ):
 
         self.userPwd = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
                                    wx.TE_PASSWORD | wx.TE_PROCESS_ENTER)
-        connexionSide.Add(self.userPwd, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.userPwd.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_ACTIVECAPTION))
+
+        connexionSide.Add(self.userPwd, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL | wx.EXPAND,
+                          5)
 
         self.cnxBtn = wx.Button(self, wx.ID_ANY, u"Connexion", wx.DefaultPosition, wx.DefaultSize, 0)
         connexionSide.Add(self.cnxBtn, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
@@ -74,7 +79,7 @@ class AppFrame ( wx.Frame ):
                                          wx.DefaultPosition, wx.DefaultSize, 0)
         user01Infos.Add(self.user01Led, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.user01Deno = wx.StaticText(self, wx.ID_ANY, u"User01", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.user01Deno = wx.StaticText(self, wx.ID_ANY, u"Poste 1", wx.DefaultPosition, wx.DefaultSize, 0)
         self.user01Deno.Wrap(-1)
 
         user01Infos.Add(self.user01Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
@@ -91,7 +96,7 @@ class AppFrame ( wx.Frame ):
                                          wx.DefaultPosition, wx.DefaultSize, 0)
         user02Infos.Add(self.user02Led, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.user02Deno = wx.StaticText(self, wx.ID_ANY, u"User02", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.user02Deno = wx.StaticText(self, wx.ID_ANY, u"Poste 2", wx.DefaultPosition, wx.DefaultSize, 0)
         self.user02Deno.Wrap(-1)
 
         user02Infos.Add(self.user02Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
@@ -108,7 +113,7 @@ class AppFrame ( wx.Frame ):
                                          wx.DefaultPosition, wx.DefaultSize, 0)
         user03Infos.Add(self.user03Led, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.user03Deno = wx.StaticText(self, wx.ID_ANY, u"User03", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.user03Deno = wx.StaticText(self, wx.ID_ANY, u"Poste 3", wx.DefaultPosition, wx.DefaultSize, 0)
         self.user03Deno.Wrap(-1)
 
         user03Infos.Add(self.user03Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
@@ -122,7 +127,7 @@ class AppFrame ( wx.Frame ):
                                          wx.DefaultPosition, wx.DefaultSize, 0)
         user04Infos.Add(self.user04Led, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.user04Deno = wx.StaticText(self, wx.ID_ANY, u"User04", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.user04Deno = wx.StaticText(self, wx.ID_ANY, u"Poste 4", wx.DefaultPosition, wx.DefaultSize, 0)
         self.user04Deno.Wrap(-1)
 
         user04Infos.Add(self.user04Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
@@ -131,15 +136,34 @@ class AppFrame ( wx.Frame ):
 
         appPage.Add(boardSide, 1, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        bSizer16 = wx.BoxSizer(wx.VERTICAL)
+        spacerRight = wx.BoxSizer(wx.VERTICAL)
 
-        bSizer16.Add((0, 0), 0, wx.ALL, 25)
+        spacerRight.Add((0, 0), 0, wx.ALL, 25)
 
-        appPage.Add(bSizer16, 0, wx.EXPAND, 5)
+        appPage.Add(spacerRight, 0, wx.EXPAND, 5)
 
         mainPage.Add(appPage, 0, wx.ALL | wx.EXPAND, 5)
 
-        mainPage.Add((0, 0), 1, wx.EXPAND, 5)
+        chatBoard = wx.BoxSizer(wx.VERTICAL)
+
+        self.chatView = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
+                                    wx.HSCROLL | wx.TE_MULTILINE | wx.TE_READONLY)
+        chatBoard.Add(self.chatView, 1, wx.ALL | wx.EXPAND, 5)
+
+        mainPage.Add(chatBoard, 1, wx.EXPAND, 5)
+
+        textBoard = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.sendBtn = wx.Button(self, wx.ID_ANY, u"Envoyer", wx.DefaultPosition, wx.DefaultSize, 0)
+        textBoard.Add(self.sendBtn, 0, wx.ALL, 5)
+
+        self.sendText = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
+        textBoard.Add(self.sendText, 1, wx.ALL, 5)
+
+        self.afkBtn = wx.Button(self, wx.ID_ANY, u"AFK", wx.DefaultPosition, wx.DefaultSize, 0)
+        textBoard.Add(self.afkBtn, 0, wx.ALL, 5)
+
+        mainPage.Add(textBoard, 0, wx.EXPAND, 5)
 
         self.mailBox = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY)
         mainPage.Add(self.mailBox, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND, 5)
@@ -157,6 +181,9 @@ class AppFrame ( wx.Frame ):
         self.user01Kick.Bind(wx.EVT_BUTTON, self.onUser01KickBtn)
         self.user02Kick.Bind(wx.EVT_BUTTON, self.onUser02KickBtn)
         self.user03Kick.Bind(wx.EVT_BUTTON, self.onUser03KickBtn)
+        self.sendBtn.Bind(wx.EVT_BUTTON, self.onSendBtn)
+        self.sendText.Bind(wx.EVT_TEXT_ENTER, self.onSendBtn)
+        self.afkBtn.Bind(wx.EVT_BUTTON, self.onAfkBtn)
         self.mailBox.Bind(wx.EVT_TEXT, self.onImportChange)
 
     def onImportChange(self, event):
@@ -193,4 +220,10 @@ class AppFrame ( wx.Frame ):
         event.Skip()
 
     def onUser03KickBtn(self, event):
+        event.Skip()
+
+    def onSendBtn(self, event):
+        event.Skip()
+
+    def onAfkBtn(self, event):
         event.Skip()
