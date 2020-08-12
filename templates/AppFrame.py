@@ -3,20 +3,10 @@
 
 import jsonpickle
 import wx.adv
-import appSettings
 import queue
 
-from appcore.connexion.MessageToServer import MessageToServer
-from appcore.connexion.UserCnx import UserCnx
 from appcore.connexion.sendMessageToServer import sendMessageToServer
 from appcore.decodeur.decodeMsg import decodeMsg
-from appcore.display.firstDisplay import firstDisplay
-from appcore.display.dialogMsg import dialogMsg
-from appcore.display.playerLogoutDisplay import playerLogoutDisplay
-from appcore.gameMsg.DeconnectGameInfos import DeconnectGameInfos
-from appcore.gameMsg.GameCreateMsg import GameCreateMsg
-from appcore.gameMsg.SelectPrivateGame import SelectPrivateGame
-from appcore.translate import _
 
 jobs = queue.Queue()
 
@@ -25,184 +15,182 @@ jobs = queue.Queue()
 # Class AppFrame
 ###########################################################################
 
-class AppFrame(wx.Frame):
+class AppFrame ( wx.Frame ):
 
-    def __init__(self, parent):
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"ChatPubSub", pos=wx.DefaultPosition,
-                          size=wx.Size(600, 500), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+    def __init__( self, parent ):
+        wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"AppPubSub", pos = wx.DefaultPosition, size = wx.Size( 440,341 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
-        self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
+        self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
-        self.m_menubar1 = wx.MenuBar(0)
+        self.protocol = None
+
+        self.menubar1 = wx.MenuBar(0)
         self.m_menu1 = wx.Menu()
         self.m_menuItem1 = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Quitter" + u"\t" + u"ctrl-q",
                                        u"Quitter l'application", wx.ITEM_NORMAL)
         self.m_menu1.Append(self.m_menuItem1)
 
-        self.m_menubar1.Append(self.m_menu1, u"Menu")
+        self.menubar1.Append(self.m_menu1, u"Menu")
 
-        self.SetMenuBar(self.m_menubar1)
+        self.SetMenuBar(self.menubar1)
 
-        self.mainStatusBar = self.CreateStatusBar(1, wx.STB_SIZEGRIP, wx.ID_ANY)
-        bSizer1 = wx.BoxSizer(wx.VERTICAL)
+        mainPage = wx.BoxSizer(wx.VERTICAL)
 
-        self.connexionTab = wx.Panel(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL)
-        bSizer45 = wx.BoxSizer(wx.VERTICAL)
+        mainPage.Add((0, 0), 1, wx.EXPAND, 5)
 
-        bSizer46 = wx.BoxSizer(wx.HORIZONTAL)
+        appPage = wx.BoxSizer(wx.HORIZONTAL)
 
-        bSizer46.Add((0, 0), 1, wx.EXPAND, 5)
+        connexionSide = wx.BoxSizer(wx.VERTICAL)
 
-        self.cnxTabLock1 = wx.StaticBitmap(self.connexionTab, wx.ID_ANY,
-                                           wx.Bitmap(u"public/icons/16x16_user.png", wx.BITMAP_TYPE_ANY),
-                                           wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer46.Add(self.cnxTabLock1, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.userIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(u"public/icons/16x16_user.png", wx.BITMAP_TYPE_ANY),
+                                        wx.DefaultPosition, wx.DefaultSize, 0)
+        connexionSide.Add(self.userIcon, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.cnxTabUserEntry = wx.TextCtrl(self.connexionTab, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition,
-                                           wx.DefaultSize, 0)
-        bSizer46.Add(self.cnxTabUserEntry, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.userLogin = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
+        connexionSide.Add(self.userLogin, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.cnxTabLock11 = wx.StaticBitmap(self.connexionTab, wx.ID_ANY,
-                                            wx.Bitmap(u"public/icons/16x16_key.png", wx.BITMAP_TYPE_ANY),
-                                            wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer46.Add(self.cnxTabLock11, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.pwdIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(u"public/icons/16x16_key.png", wx.BITMAP_TYPE_ANY),
+                                       wx.DefaultPosition, wx.DefaultSize, 0)
+        connexionSide.Add(self.pwdIcon, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.cnxTabPasswordEntry = wx.TextCtrl(self.connexionTab, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition,
-                                               wx.DefaultSize, wx.TE_PASSWORD | wx.TE_PROCESS_ENTER)
-        bSizer46.Add(self.cnxTabPasswordEntry, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.userPwd = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
+                                   wx.TE_PASSWORD | wx.TE_PROCESS_ENTER)
+        connexionSide.Add(self.userPwd, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.cnxTabCnxBtn = wx.Button(self.connexionTab, wx.ID_ANY, u"Connexion", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer46.Add(self.cnxTabCnxBtn, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.cnxBtn = wx.Button(self, wx.ID_ANY, u"Connexion", wx.DefaultPosition, wx.DefaultSize, 0)
+        connexionSide.Add(self.cnxBtn, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.cnxTabLock111 = wx.StaticBitmap(self.connexionTab, wx.ID_ANY,
-                                             wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
-                                             wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer46.Add(self.cnxTabLock111, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        appPage.Add(connexionSide, 1, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.m_staticText45 = wx.StaticText(self.connexionTab, wx.ID_ANY, u"---", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_staticText45.Wrap(-1)
+        boardSide = wx.BoxSizer(wx.VERTICAL)
 
-        bSizer46.Add(self.m_staticText45, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        user01Infos = wx.BoxSizer(wx.HORIZONTAL)
 
-        bSizer46.Add((0, 0), 1, wx.EXPAND, 5)
+        self.user01Kick = wx.Button(self, wx.ID_ANY, u"Kick", wx.DefaultPosition, wx.DefaultSize, 0)
+        user01Infos.Add(self.user01Kick, 0, 0, 5)
 
-        bSizer45.Add(bSizer46, 0, wx.EXPAND, 5)
+        self.user01Led = wx.StaticBitmap(self, wx.ID_ANY,
+                                         wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
+                                         wx.DefaultPosition, wx.DefaultSize, 0)
+        user01Infos.Add(self.user01Led, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        bSizer48 = wx.BoxSizer(wx.HORIZONTAL)
+        self.user01Deno = wx.StaticText(self, wx.ID_ANY, u"User01", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.user01Deno.Wrap(-1)
 
-        bSizer49 = wx.BoxSizer(wx.VERTICAL)
+        user01Infos.Add(self.user01Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.m_textCtrl6 = wx.TextCtrl(self.connexionTab, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
-                                       0)
-        bSizer49.Add(self.m_textCtrl6, 1, wx.ALL | wx.EXPAND, 5)
+        boardSide.Add(user01Infos, 0, wx.ALIGN_RIGHT | wx.ALL, 5)
 
-        bSizer48.Add(bSizer49, 1, wx.EXPAND, 5)
+        user02Infos = wx.BoxSizer(wx.HORIZONTAL)
 
-        bSizer50 = wx.BoxSizer(wx.VERTICAL)
+        self.user02Kick = wx.Button(self, wx.ID_ANY, u"Kick", wx.DefaultPosition, wx.DefaultSize, 0)
+        user02Infos.Add(self.user02Kick, 0, 0, 5)
 
-        self.m_button11 = wx.Button(self.connexionTab, wx.ID_ANY, u"Equipe", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer50.Add(self.m_button11, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 5)
+        self.user02Led = wx.StaticBitmap(self, wx.ID_ANY,
+                                         wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
+                                         wx.DefaultPosition, wx.DefaultSize, 0)
+        user02Infos.Add(self.user02Led, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        bSizer51 = wx.BoxSizer(wx.HORIZONTAL)
+        self.user02Deno = wx.StaticText(self, wx.ID_ANY, u"User02", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.user02Deno.Wrap(-1)
 
-        self.cnxTabLock1111 = wx.StaticBitmap(self.connexionTab, wx.ID_ANY,
-                                              wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
-                                              wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer51.Add(self.cnxTabLock1111, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        user02Infos.Add(self.user02Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        self.m_staticText451 = wx.StaticText(self.connexionTab, wx.ID_ANY, u"xxxxxxxxxx", wx.DefaultPosition,
-                                             wx.DefaultSize, 0)
-        self.m_staticText451.Wrap(-1)
+        boardSide.Add(user02Infos, 1, wx.ALIGN_RIGHT | wx.ALL, 5)
 
-        bSizer51.Add(self.m_staticText451, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        user03Infos = wx.BoxSizer(wx.HORIZONTAL)
 
-        bSizer50.Add(bSizer51, 0, wx.EXPAND, 5)
+        self.user03Kick = wx.Button(self, wx.ID_ANY, u"Kick", wx.DefaultPosition, wx.DefaultSize, 0)
+        user03Infos.Add(self.user03Kick, 0, 0, 5)
 
-        bSizer511 = wx.BoxSizer(wx.HORIZONTAL)
+        self.user03Led = wx.StaticBitmap(self, wx.ID_ANY,
+                                         wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
+                                         wx.DefaultPosition, wx.DefaultSize, 0)
+        user03Infos.Add(self.user03Led, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.cnxTabLock11111 = wx.StaticBitmap(self.connexionTab, wx.ID_ANY,
-                                               wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
-                                               wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer511.Add(self.cnxTabLock11111, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.user03Deno = wx.StaticText(self, wx.ID_ANY, u"User03", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.user03Deno.Wrap(-1)
 
-        self.m_staticText4511 = wx.StaticText(self.connexionTab, wx.ID_ANY, u"xxxxxxxxxx", wx.DefaultPosition,
-                                              wx.DefaultSize, 0)
-        self.m_staticText4511.Wrap(-1)
+        user03Infos.Add(self.user03Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        bSizer511.Add(self.m_staticText4511, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        boardSide.Add(user03Infos, 1, wx.ALIGN_RIGHT | wx.ALL, 5)
 
-        bSizer50.Add(bSizer511, 0, wx.EXPAND, 5)
+        user04Infos = wx.BoxSizer(wx.HORIZONTAL)
 
-        bSizer513 = wx.BoxSizer(wx.HORIZONTAL)
+        self.user04Led = wx.StaticBitmap(self, wx.ID_ANY,
+                                         wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
+                                         wx.DefaultPosition, wx.DefaultSize, 0)
+        user04Infos.Add(self.user04Led, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
 
-        self.cnxTabLock11113 = wx.StaticBitmap(self.connexionTab, wx.ID_ANY,
-                                               wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
-                                               wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer513.Add(self.cnxTabLock11113, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        self.user04Deno = wx.StaticText(self, wx.ID_ANY, u"User04", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.user04Deno.Wrap(-1)
 
-        self.m_staticText4513 = wx.StaticText(self.connexionTab, wx.ID_ANY, u"xxxxxxxxxx", wx.DefaultPosition,
-                                              wx.DefaultSize, 0)
-        self.m_staticText4513.Wrap(-1)
+        user04Infos.Add(self.user04Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        bSizer513.Add(self.m_staticText4513, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        boardSide.Add(user04Infos, 1, wx.ALIGN_RIGHT | wx.ALL, 5)
 
-        bSizer50.Add(bSizer513, 0, wx.EXPAND, 5)
+        appPage.Add(boardSide, 1, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        m_radioBox3Choices = [u"Actifs", u"Non Actifs"]
-        self.m_radioBox3 = wx.RadioBox(self.connexionTab, wx.ID_ANY, u"Messages Privés", wx.DefaultPosition,
-                                       wx.DefaultSize, m_radioBox3Choices, 1, wx.RA_SPECIFY_COLS)
-        self.m_radioBox3.SetSelection(0)
-        bSizer50.Add(self.m_radioBox3, 0, wx.ALL, 5)
+        bSizer16 = wx.BoxSizer(wx.VERTICAL)
 
-        bSizer48.Add(bSizer50, 0, wx.EXPAND, 5)
+        bSizer16.Add((0, 0), 0, wx.ALL, 25)
 
-        bSizer45.Add(bSizer48, 1, wx.EXPAND, 5)
+        appPage.Add(bSizer16, 0, wx.EXPAND, 5)
 
-        bSizer59 = wx.BoxSizer(wx.HORIZONTAL)
+        mainPage.Add(appPage, 0, wx.ALL | wx.EXPAND, 5)
 
-        self.m_staticText53 = wx.StaticText(self.connexionTab, wx.ID_ANY, u"xxxxxxxxxx", wx.DefaultPosition,
-                                            wx.DefaultSize, 0)
-        self.m_staticText53.Wrap(-1)
-
-        bSizer59.Add(self.m_staticText53, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-
-        self.m_textCtrl7 = wx.TextCtrl(self.connexionTab, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
-                                       0)
-        bSizer59.Add(self.m_textCtrl7, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-
-        self.m_button12 = wx.Button(self.connexionTab, wx.ID_ANY, u"Envoyer", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer59.Add(self.m_button12, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
-
-        bSizer45.Add(bSizer59, 0, wx.EXPAND, 5)
-
-        self.connexionTab.SetSizer(bSizer45)
-        self.connexionTab.Layout()
-        bSizer45.Fit(self.connexionTab)
-        bSizer1.Add(self.connexionTab, 1, wx.EXPAND | wx.ALL, 5)
+        mainPage.Add((0, 0), 1, wx.EXPAND, 5)
 
         self.mailBox = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY)
-        bSizer1.Add(self.mailBox, 0, wx.ALL | wx.EXPAND, 5)
+        mainPage.Add(self.mailBox, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND, 5)
 
-        self.SetSizer(bSizer1)
+        self.SetSizer(mainPage)
         self.Layout()
+        self.statusBar = self.CreateStatusBar(1, wx.STB_SIZEGRIP, wx.ID_ANY)
 
         self.Centre(wx.BOTH)
 
         # Connect Events
         self.Bind(wx.EVT_MENU, self.onMenuQuit, id=self.m_menuItem1.GetId())
-        self.cnxTabPasswordEntry.Bind(wx.EVT_TEXT_ENTER, self.cnxTabOnCnxBtn)
-        self.cnxTabCnxBtn.Bind(wx.EVT_BUTTON, self.cnxTabOnCnxBtn)
+        self.userPwd.Bind(wx.EVT_TEXT_ENTER, self.cnxCnxBtn)
+        self.cnxBtn.Bind(wx.EVT_BUTTON, self.cnxCnxBtn)
+        self.user01Kick.Bind(wx.EVT_BUTTON, self.onUser01KickBtn)
+        self.user02Kick.Bind(wx.EVT_BUTTON, self.onUser02KickBtn)
+        self.user03Kick.Bind(wx.EVT_BUTTON, self.onUser03KickBtn)
         self.mailBox.Bind(wx.EVT_TEXT, self.onImportChange)
 
-    def __del__(self):
-        pass
-
-    # Virtual event handlers, overide them in your derived class
-    def onMenuQuit(self, event):
-        event.Skip()
-
-    def cnxTabOnCnxBtn(self, event):
-        event.Skip()
-
     def onImportChange(self, event):
+        dataBrute = self.mailBox.GetValue()
+        task = eval(dataBrute)
+
+        jobs.put(task)
+
+        while not jobs.empty():
+            message = jobs.get()
+            code = message['code']
+            value = False
+            if message['value']:
+                value = message['value']
+            decodeMsg(self, code, value)
+
+        event.Skip()
+
+    def sendMessageToServer(self, msg):
+        cnxJSON = jsonpickle.encode(msg, unpicklable=False)
+        self.protocol.sendLine(cnxJSON.encode('UTF-8'))
+
+    def onMenuQuit(self, event):
+        sendMessageToServer(self, 'userDecnx', True)
+        event.Skip()
+
+    def cnxCnxBtn(self, event):
+        event.Skip()
+
+    def onUser01KickBtn(self, event):
+        event.Skip()
+
+    def onUser02KickBtn(self, event):
+        event.Skip()
+
+    def onUser03KickBtn(self, event):
         event.Skip()
