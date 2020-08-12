@@ -4,9 +4,13 @@
 from appcore.connexion.cnxOkMsg import cnxOkMsg
 from appcore.connexion.mainActionMsg import mainActionMsg
 from appcore.display.cxnMsg import cnxMsg
+from appcore.display.errorMsg import errorMsg
 
 
 def decodeMsg(self, code, value):
+    if code == 'error':
+        errorMsg(self, value)
+
     if code == 'cnx':
         cnxMsg(self, value)
 
@@ -15,3 +19,4 @@ def decodeMsg(self, code, value):
 
     if code == 'mainAction':
         mainActionMsg(self, value)
+

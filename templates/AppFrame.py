@@ -9,6 +9,7 @@ from appcore.connexion.UserCnx import UserCnx
 
 from appcore.connexion.sendMessageToServer import sendMessageToServer
 from appcore.decodeur.decodeMsg import decodeMsg
+from appcore.display.firstDisplay import mainDisplay
 
 jobs = queue.Queue()
 
@@ -181,6 +182,8 @@ class AppFrame(wx.Frame):
         self.sendText.Bind(wx.EVT_TEXT_ENTER, self.onSendBtn)
         self.afkBtn.Bind(wx.EVT_BUTTON, self.onAfkBtn)
         self.mailBox.Bind(wx.EVT_TEXT, self.onImportChange)
+
+        mainDisplay(self)
 
     def onImportChange(self, event):
         dataBrute = self.mailBox.GetValue()

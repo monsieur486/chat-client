@@ -4,14 +4,16 @@ import wx
 import appSettings
 
 
-def mainActionMsg(self, statsInfos):
+def mainActionMsg(self, changeInfos):
+    action = changeInfos['action']
+    user = changeInfos['user']
+    nickname = changeInfos['nickname']
+    statesUsers = changeInfos['statesUsers']
 
-    change = statsInfos['change']
-    user = statsInfos['user']
-    user01State = statsInfos['user01State']
-    user02State = statsInfos['user02State']
-    user03State = statsInfos['user03State']
-    user04State = statsInfos['user04State']
+    user01State = statesUsers['user01State']
+    user02State = statesUsers['user02State']
+    user03State = statesUsers['user03State']
+    user04State = statesUsers['user04State']
 
     if appSettings.user == user:
         appSettings.userIsLoggedIn = True

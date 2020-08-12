@@ -4,33 +4,29 @@
 import appSettings
 
 
-def firstDisplay(self):
-    self.mailBox.Hide()
-    self.cnxTabPlay4.Disable()
-    self.cnxTabPlay5.Disable()
-    self.cnxTabJoinBtn.Disable()
-    self.cnxTabLeave.Disable()
-    self.cnxTabCreateBtn.Disable()
-    self.cnxTabOptionsSA.Disable()
-    self.cnxTabOptionsAR.Disable()
-    self.cnxTabOptionsSC.Disable()
-    self.cnxTabOptionsArrondi.Disable()
-    self.cnxTabOptionsAB.Disable()
-    self.cnxTabOptionsPetie.Disable()
-    self.cnxTabOptionsGarde.Disable()
-    self.cnxTabOptionsGardeSans.Disable()
-    self.cnxTabCreatePassword.Disable()
-    self.m_staticText110.Disable()
-    self.cnxTabPly1Change.Show(False)
-    self.cnxTabPly2Change.Show(False)
-    self.cnxTabPly3Change.Show(False)
-    self.cnxTabPly4Change.Show(False)
-    self.cnxTabPly5Change.Show(False)
-    self.cnxTabFicheGameStart.Show(False)
-    self.cnxTabUserEntry.SetValue(appSettings.user)
+def mainDisplay(self):
+    if appSettings.isLoggedIn:
+        self.sendBtn.Enable()
+        self.sendText.Enable()
+        self.afkBtn.Enable()
+    else:
+        self.user01Kick.Hide()
+        self.user02Kick.Hide()
+        self.user03Kick.Hide()
 
-    if appSettings.memoryInfos:
-        self.cnxTabPasswordEntry.SetValue(appSettings.password)
-        self.cnxTabCheckInfos.SetValue(True)
+        self.user01Led.Hide()
+        self.user02Led.Hide()
+        self.user03Led.Hide()
+        self.user04Led.Hide()
+
+        self.user01Deno.Hide()
+        self.user02Deno.Hide()
+        self.user03Deno.Hide()
+        self.user04Deno.Hide()
+
+        self.sendBtn.Disable()
+        self.sendText.Disable()
+        self.afkBtn.Disable()
+        self.chatView.Disable()
 
     self.Layout()
