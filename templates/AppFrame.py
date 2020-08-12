@@ -19,11 +19,9 @@ class AppFrame(wx.Frame):
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"AppPubSub", pos=wx.DefaultPosition,
-                          size=wx.Size(440, 636), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+                          size=wx.Size(364, 636), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
-
-        self.protocol = None
 
         self.menubar1 = wx.MenuBar(0)
         self.m_menu1 = wx.Menu()
@@ -135,12 +133,6 @@ class AppFrame(wx.Frame):
         boardSide.Add(user04Infos, 1, wx.ALIGN_RIGHT | wx.ALL, 5)
 
         appPage.Add(boardSide, 1, wx.ALIGN_CENTER_VERTICAL, 5)
-
-        spacerRight = wx.BoxSizer(wx.VERTICAL)
-
-        spacerRight.Add((0, 0), 0, wx.ALL, 25)
-
-        appPage.Add(spacerRight, 0, wx.EXPAND, 5)
 
         mainPage.Add(appPage, 0, wx.ALL | wx.EXPAND, 5)
 
