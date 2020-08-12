@@ -4,6 +4,8 @@
 import jsonpickle
 import wx.adv
 import queue
+import appSettings
+from appcore.connexion.UserCnx import UserCnx
 
 from appcore.connexion.sendMessageToServer import sendMessageToServer
 from appcore.decodeur.decodeMsg import decodeMsg
@@ -22,6 +24,8 @@ class AppFrame(wx.Frame):
                           size=wx.Size(364, 636), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
+
+        self.protocol = None
 
         self.menubar1 = wx.MenuBar(0)
         self.m_menu1 = wx.Menu()
@@ -203,6 +207,11 @@ class AppFrame(wx.Frame):
         event.Skip()
 
     def cnxCnxBtn(self, event):
+        userCnx = self.userLogin.GetValue()
+        passwordCnx = self.userPwd.GetValue()
+        appSettings.user = userCnx
+        appSettings.password = passwordCnx
+        sendMessageToServer(self, 'userCnx', UserCnx(userCnx, passwordCnx))
         event.Skip()
 
     def onUser01KickBtn(self, event):
