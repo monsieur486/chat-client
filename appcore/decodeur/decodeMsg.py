@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-from appcore.connexion.cnxOkMsg import cnxOkMsg
 from appcore.connexion.mainActionMsg import mainActionMsg
 from appcore.display.cxnMsg import cnxMsg
 from appcore.display.errorMsg import errorMsg

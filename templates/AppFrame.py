@@ -5,6 +5,7 @@ import jsonpickle
 import wx.adv
 import queue
 import appSettings
+from appcore.connexion.ChatMsg import ChatMsg
 from appcore.connexion.UserCnx import UserCnx
 
 from appcore.connexion.sendMessageToServer import sendMessageToServer
@@ -22,7 +23,7 @@ class AppFrame(wx.Frame):
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"AppPubSub", pos=wx.DefaultPosition,
-                          size=wx.Size(346, 513), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+                          size=wx.Size(368, 513), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
@@ -146,7 +147,7 @@ class AppFrame(wx.Frame):
         bSizer9 = wx.BoxSizer(wx.VERTICAL)
 
         self.chatBoard = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
-                                     wx.HSCROLL | wx.TE_READONLY)
+                                     wx.HSCROLL | wx.TE_MULTILINE | wx.TE_READONLY)
         bSizer9.Add(self.chatBoard, 1, wx.ALL | wx.EXPAND, 5)
 
         bSizer10 = wx.BoxSizer(wx.HORIZONTAL)
@@ -231,4 +232,8 @@ class AppFrame(wx.Frame):
         event.Skip()
 
     def onSendBtn(self, event):
+        user = appSettings.user
+        msgToSend = self.textMsg.GetValue()
+        sendMessageToServer(self, 'sendMsg', ChatMsg(user, msgToSend))
+        self.textMsg.SetValue("")
         event.Skip()
