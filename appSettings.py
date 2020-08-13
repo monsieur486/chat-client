@@ -10,6 +10,7 @@ locale = 'fr'
 user = "anonyme"
 isLoggedIn = False
 isDemoMode = False
+isDispo = True
 user01State = 0
 user02State = 0
 user03State = 0

@@ -22,7 +22,7 @@ class AppFrame(wx.Frame):
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"AppPubSub", pos=wx.DefaultPosition,
-                          size=wx.Size(364, 636), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+                          size=wx.Size(235, 324), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
@@ -30,10 +30,6 @@ class AppFrame(wx.Frame):
 
         self.menubar1 = wx.MenuBar(0)
         self.m_menu1 = wx.Menu()
-        self.menuDecnx = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Déconnexion", u"Déconnexion", wx.ITEM_NORMAL)
-        self.m_menu1.Append(self.menuDecnx)
-        self.menuDecnx.Enable(False)
-
         self.menuChangeMode = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Change Mode", u"Change Mode", wx.ITEM_NORMAL)
         self.m_menu1.Append(self.menuChangeMode)
 
@@ -74,24 +70,20 @@ class AppFrame(wx.Frame):
         connexionSide.Add(self.userPwd, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL | wx.EXPAND,
                           5)
 
-        bSizer11 = wx.BoxSizer(wx.HORIZONTAL)
-
         self.cnxBtn = wx.Button(self, wx.ID_ANY, u"Connexion", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer11.Add(self.cnxBtn, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        connexionSide.Add(self.cnxBtn, 0, wx.ALIGN_CENTER_HORIZONTAL, 5)
 
-        self.afkBtn = wx.Button(self, wx.ID_ANY, u"AFK", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer11.Add(self.afkBtn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 5)
+        self.dispoBtn = wx.Button(self, wx.ID_ANY, u"Disponible", wx.DefaultPosition, wx.DefaultSize, 0)
+        connexionSide.Add(self.dispoBtn, 0, wx.ALIGN_CENTER_HORIZONTAL, 5)
 
-        connexionSide.Add(bSizer11, 0, 0, 5)
+        self.afkBtn = wx.Button(self, wx.ID_ANY, u"En Pause", wx.DefaultPosition, wx.DefaultSize, 0)
+        connexionSide.Add(self.afkBtn, 0, wx.ALIGN_CENTER_HORIZONTAL, 5)
 
         appPage.Add(connexionSide, 1, wx.ALIGN_CENTER_VERTICAL, 5)
 
         boardSide = wx.BoxSizer(wx.VERTICAL)
 
         user01Infos = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.user01Kick = wx.Button(self, wx.ID_ANY, u"Kick", wx.DefaultPosition, wx.DefaultSize, 0)
-        user01Infos.Add(self.user01Kick, 0, 0, 5)
 
         self.user01Led = wx.StaticBitmap(self, wx.ID_ANY,
                                          wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
@@ -103,12 +95,9 @@ class AppFrame(wx.Frame):
 
         user01Infos.Add(self.user01Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        boardSide.Add(user01Infos, 0, wx.ALIGN_RIGHT | wx.ALL, 5)
+        boardSide.Add(user01Infos, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
         user02Infos = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.user02Kick = wx.Button(self, wx.ID_ANY, u"Kick", wx.DefaultPosition, wx.DefaultSize, 0)
-        user02Infos.Add(self.user02Kick, 0, 0, 5)
 
         self.user02Led = wx.StaticBitmap(self, wx.ID_ANY,
                                          wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
@@ -120,12 +109,9 @@ class AppFrame(wx.Frame):
 
         user02Infos.Add(self.user02Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        boardSide.Add(user02Infos, 1, wx.ALIGN_RIGHT | wx.ALL, 5)
+        boardSide.Add(user02Infos, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
         user03Infos = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.user03Kick = wx.Button(self, wx.ID_ANY, u"Kick", wx.DefaultPosition, wx.DefaultSize, 0)
-        user03Infos.Add(self.user03Kick, 0, 0, 5)
 
         self.user03Led = wx.StaticBitmap(self, wx.ID_ANY,
                                          wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY),
@@ -137,7 +123,7 @@ class AppFrame(wx.Frame):
 
         user03Infos.Add(self.user03Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        boardSide.Add(user03Infos, 1, wx.ALIGN_RIGHT | wx.ALL, 5)
+        boardSide.Add(user03Infos, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
         user04Infos = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -151,29 +137,11 @@ class AppFrame(wx.Frame):
 
         user04Infos.Add(self.user04Deno, 0, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        boardSide.Add(user04Infos, 1, wx.ALIGN_RIGHT | wx.ALL, 5)
+        boardSide.Add(user04Infos, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
         appPage.Add(boardSide, 1, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        mainPage.Add(appPage, 0, wx.ALL | wx.EXPAND, 5)
-
-        chatBoard = wx.BoxSizer(wx.VERTICAL)
-
-        self.chatView = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
-                                    wx.HSCROLL | wx.TE_MULTILINE | wx.TE_READONLY)
-        chatBoard.Add(self.chatView, 1, wx.ALL | wx.EXPAND, 5)
-
-        mainPage.Add(chatBoard, 1, wx.EXPAND, 5)
-
-        textBoard = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.sendBtn = wx.Button(self, wx.ID_ANY, u"Envoyer", wx.DefaultPosition, wx.DefaultSize, 0)
-        textBoard.Add(self.sendBtn, 0, wx.ALL, 5)
-
-        self.sendText = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
-        textBoard.Add(self.sendText, 1, wx.ALL, 5)
-
-        mainPage.Add(textBoard, 0, wx.EXPAND, 5)
+        mainPage.Add(appPage, 1, wx.ALL | wx.EXPAND, 5)
 
         self.mailBox = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY)
         mainPage.Add(self.mailBox, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND, 5)
@@ -185,17 +153,12 @@ class AppFrame(wx.Frame):
         self.Centre(wx.BOTH)
 
         # Connect Events
-        self.Bind(wx.EVT_MENU, self.onMenuDecnx, id=self.menuDecnx.GetId())
         self.Bind(wx.EVT_MENU, self.onMenuChangeMode, id=self.menuChangeMode.GetId())
         self.Bind(wx.EVT_MENU, self.onMenuQuit, id=self.menuQuit.GetId())
         self.userPwd.Bind(wx.EVT_TEXT_ENTER, self.onCnxBtn)
         self.cnxBtn.Bind(wx.EVT_BUTTON, self.onCnxBtn)
+        self.dispoBtn.Bind(wx.EVT_BUTTON, self.onDispoBtn)
         self.afkBtn.Bind(wx.EVT_BUTTON, self.onAfkBtn)
-        self.user01Kick.Bind(wx.EVT_BUTTON, self.onUser01KickBtn)
-        self.user02Kick.Bind(wx.EVT_BUTTON, self.onUser02KickBtn)
-        self.user03Kick.Bind(wx.EVT_BUTTON, self.onUser03KickBtn)
-        self.sendBtn.Bind(wx.EVT_BUTTON, self.onSendBtn)
-        self.sendText.Bind(wx.EVT_TEXT_ENTER, self.onSendBtn)
         self.mailBox.Bind(wx.EVT_TEXT, self.onImportChange)
 
         mainDisplay(self)
@@ -232,10 +195,6 @@ class AppFrame(wx.Frame):
         mainDisplay(self)
         event.Skip()
 
-    def onMenuDecnx(self, event):
-        sendMessageToServer(self, 'userDecnx', True)
-        event.Skip()
-
     def onCnxBtn(self, event):
         userCnx = self.userLogin.GetValue()
         passwordCnx = self.userPwd.GetValue()
@@ -243,21 +202,10 @@ class AppFrame(wx.Frame):
         sendMessageToServer(self, 'userCnx', UserCnx(userCnx, passwordCnx))
         event.Skip()
 
-    def onUser01KickBtn(self, event):
-        event.Skip()
-
-    def onUser02KickBtn(self, event):
-        event.Skip()
-
-    def onUser03KickBtn(self, event):
-        event.Skip()
-
-    def onSendBtn(self, event):
-        appSettings.isLoggedIn = True
-        mainDisplay(self)
-        event.Skip()
-
     def onAfkBtn(self, event):
-        appSettings.isLoggedIn = False
-        mainDisplay(self)
+        sendMessageToServer(self, 'userPause', appSettings.user)
+        event.Skip()
+
+    def onDispoBtn(self, event):
+        sendMessageToServer(self, 'userDispo', appSettings.user)
         event.Skip()

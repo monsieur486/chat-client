@@ -25,5 +25,38 @@ def mainActionMsg(self, changeInfos):
                 appSettings.isLoggedIn = True
                 msg = "Connecté(e) en tant que: " + nickname
                 self.statusBar.SetStatusText(msg, 0)
+                if user == "user01":
+                    self.user01Deno.SetLabel("Vous")
+                if user == "user02":
+                    self.user02Deno.SetLabel("Vous")
+                if user == "user03":
+                    self.user03Deno.SetLabel("Vous")
+                if user == "user04":
+                    self.user04Deno.SetLabel("Vous")
+
+    if action == "loose":
+        if appSettings.isLoggedIn:
+            msg = nickname + " nous a quitté"
+            self.statusBar.SetStatusText(msg, 0)
+
+    if action == "pause":
+        if appSettings.isLoggedIn:
+            if appSettings.user == user:
+                appSettings.isDispo = False
+                msg = "Vous partez en pause"
+            else:
+                msg = nickname + " est en pause"
+
+            self.statusBar.SetStatusText(msg, 0)
+
+    if action == "dispo":
+        if appSettings.isLoggedIn:
+            if appSettings.user == user:
+                appSettings.isDispo = True
+                msg = "Vous êtes disponible"
+            else:
+                msg = nickname + " est disponible"
+
+            self.statusBar.SetStatusText(msg, 0)
 
     mainDisplay(self)
