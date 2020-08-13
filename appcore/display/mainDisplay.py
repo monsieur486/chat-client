@@ -28,6 +28,21 @@ def mainDisplay(self):
         self.user03Deno.Show()
         self.user04Deno.Show()
 
+        if appSettings.sendTo == "all":
+            self.sendBtn.SetLabel("Envoyer")
+
+        if appSettings.sendTo == "user01":
+            self.sendBtn.SetLabel("Poste 1")
+
+        if appSettings.sendTo == "user02":
+            self.sendBtn.SetLabel("Poste 2")
+
+        if appSettings.sendTo == "user03":
+            self.sendBtn.SetLabel("Poste 3")
+
+        if appSettings.sendTo == "user04":
+            self.sendBtn.SetLabel("Poste 4")
+
         if appSettings.isDispo:
             self.afkBtn.Show()
             self.dispoBtn.Hide()
@@ -37,39 +52,75 @@ def mainDisplay(self):
 
         if appSettings.user01State == 0:
             self.user01Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY))
+            self.user01Deno.Disable()
+            if appSettings.sendTo == "user01":
+                appSettings.sendTo = "all"
+                self.textMsg.SetValue("")
 
         if appSettings.user01State == 1:
             self.user01Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_green.png", wx.BITMAP_TYPE_ANY))
+            self.user01Deno.Enable()
 
         if appSettings.user01State == 2:
             self.user01Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_red.png", wx.BITMAP_TYPE_ANY))
-
+            self.user01Deno.Disable()
+            if appSettings.sendTo == "user01":
+                appSettings.sendTo = "all"
+                self.textMsg.SetValue("")
+                
         if appSettings.user02State == 0:
             self.user02Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY))
+            self.user02Deno.Disable()
+            if appSettings.sendTo == "user02":
+                appSettings.sendTo = "all"
+                self.textMsg.SetValue("")
 
         if appSettings.user02State == 1:
             self.user02Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_green.png", wx.BITMAP_TYPE_ANY))
+            self.user02Deno.Enable()
 
         if appSettings.user02State == 2:
             self.user02Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_red.png", wx.BITMAP_TYPE_ANY))
-
+            self.user02Deno.Disable()
+            if appSettings.sendTo == "user02":
+                appSettings.sendTo = "all"
+                self.textMsg.SetValue("")
+                
         if appSettings.user03State == 0:
             self.user03Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY))
+            self.user03Deno.Disable()
+            if appSettings.sendTo == "user03":
+                appSettings.sendTo = "all"
+                self.textMsg.SetValue("")
 
         if appSettings.user03State == 1:
             self.user03Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_green.png", wx.BITMAP_TYPE_ANY))
+            self.user03Deno.Enable()
 
         if appSettings.user03State == 2:
             self.user03Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_red.png", wx.BITMAP_TYPE_ANY))
-
+            self.user03Deno.Disable()
+            if appSettings.sendTo == "user03":
+                appSettings.sendTo = "all"
+                self.textMsg.SetValue("")
+                
         if appSettings.user04State == 0:
             self.user04Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_grey.png", wx.BITMAP_TYPE_ANY))
+            self.user04Deno.Disable()
+            if appSettings.sendTo == "user04":
+                appSettings.sendTo = "all"
+                self.textMsg.SetValue("")
 
         if appSettings.user04State == 1:
             self.user04Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_green.png", wx.BITMAP_TYPE_ANY))
+            self.user04Deno.Enable()
 
         if appSettings.user04State == 2:
             self.user04Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_red.png", wx.BITMAP_TYPE_ANY))
+            self.user04Deno.Disable()
+            if appSettings.sendTo == "user04":
+                appSettings.sendTo = "all"
+                self.textMsg.SetValue("")
 
         self.sendBtn.Enable()
         self.textMsg.Enable()

@@ -136,7 +136,7 @@ class AppFrame ( wx.Frame ):
 
         bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
 
-        self.sendBtn = wx.Button( self, wx.ID_ANY, u"Envoyer", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.sendBtn = wx.Button( self, wx.ID_ANY, u"---", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer10.Add( self.sendBtn, 0, wx.ALL, 5 )
 
         self.textMsg = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_PROCESS_ENTER )
@@ -165,6 +165,10 @@ class AppFrame ( wx.Frame ):
         self.cnxBtn.Bind( wx.EVT_BUTTON, self.onCnxBtn )
         self.dispoBtn.Bind( wx.EVT_BUTTON, self.onDispoBtn )
         self.afkBtn.Bind( wx.EVT_BUTTON, self.onAfkBtn )
+        self.user01Deno.Bind( wx.EVT_LEFT_DOWN, self.onUser01Deno )
+        self.user02Deno.Bind( wx.EVT_LEFT_DOWN, self.onUser02Deno )
+        self.user03Deno.Bind( wx.EVT_LEFT_DOWN, self.onUser03Deno )
+        self.user04Deno.Bind( wx.EVT_LEFT_DOWN, self.onUser04Deno )
         self.sendBtn.Bind( wx.EVT_BUTTON, self.onSendBtn )
         self.textMsg.Bind( wx.EVT_TEXT_ENTER, self.onSendBtn )
         self.mailBox.Bind( wx.EVT_TEXT, self.onImportChange )
@@ -188,6 +192,18 @@ class AppFrame ( wx.Frame ):
         event.Skip()
 
     def onAfkBtn( self, event ):
+        event.Skip()
+
+    def onUser01Deno( self, event ):
+        event.Skip()
+
+    def onUser02Deno( self, event ):
+        event.Skip()
+
+    def onUser03Deno( self, event ):
+        event.Skip()
+
+    def onUser04Deno( self, event ):
         event.Skip()
 
     def onSendBtn( self, event ):

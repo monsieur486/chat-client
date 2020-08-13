@@ -146,12 +146,13 @@ class AppFrame(wx.Frame):
 
         bSizer9 = wx.BoxSizer(wx.VERTICAL)
 
-        self.chatBoard = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.chatBoard = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
+                                     wx.HSCROLL | wx.TE_MULTILINE | wx.TE_READONLY)
         bSizer9.Add(self.chatBoard, 1, wx.ALL | wx.EXPAND, 5)
 
         bSizer10 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.sendBtn = wx.Button(self, wx.ID_ANY, u"Envoyer", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.sendBtn = wx.Button(self, wx.ID_ANY, u"---", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer10.Add(self.sendBtn, 0, wx.ALL, 5)
 
         self.textMsg = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
@@ -178,6 +179,10 @@ class AppFrame(wx.Frame):
         self.cnxBtn.Bind(wx.EVT_BUTTON, self.onCnxBtn)
         self.dispoBtn.Bind(wx.EVT_BUTTON, self.onDispoBtn)
         self.afkBtn.Bind(wx.EVT_BUTTON, self.onAfkBtn)
+        self.user01Deno.Bind(wx.EVT_LEFT_DOWN, self.onUser01Deno)
+        self.user02Deno.Bind(wx.EVT_LEFT_DOWN, self.onUser02Deno)
+        self.user03Deno.Bind(wx.EVT_LEFT_DOWN, self.onUser03Deno)
+        self.user04Deno.Bind(wx.EVT_LEFT_DOWN, self.onUser04Deno)
         self.sendBtn.Bind(wx.EVT_BUTTON, self.onSendBtn)
         self.textMsg.Bind(wx.EVT_TEXT_ENTER, self.onSendBtn)
         self.mailBox.Bind(wx.EVT_TEXT, self.onImportChange)
@@ -235,6 +240,47 @@ class AppFrame(wx.Frame):
         user = appSettings.user
         nickname = appSettings.nickname
         msgToSend = self.textMsg.GetValue()
-        sendMessageToServer(self, 'sendMsg', ChatMsg(user, nickname, msgToSend))
-        self.textMsg.SetValue("")
+        if msgToSend:
+            sendMessageToServer(self, 'sendMsg', ChatMsg(user, nickname, msgToSend))
+            self.textMsg.SetValue("")
+        event.Skip()
+
+    def onUser01Deno(self, event): 
+        if appSettings.sendTo != "user01":
+            if appSettings.user == "user01":
+                appSettings.sendTo = 'all'
+            else:
+                if appSettings.user01State == 1:
+                    appSettings.sendTo = 'user01'
+        mainDisplay(self)
+        event.Skip()
+
+    def onUser02Deno(self, event):
+        if appSettings.sendTo != "user02":
+            if appSettings.user == "user02":
+                appSettings.sendTo = 'all'
+            else:
+                if appSettings.user02State == 1:
+                    appSettings.sendTo = 'user02'
+        mainDisplay(self)
+        event.Skip()
+
+    def onUser03Deno(self, event):
+        if appSettings.sendTo != "user03":
+            if appSettings.user == "user03":
+                appSettings.sendTo = 'all'
+            else:
+                if appSettings.user03State == 1:
+                    appSettings.sendTo = 'user03'
+        mainDisplay(self)
+        event.Skip()
+
+    def onUser04Deno(self, event):
+        if appSettings.sendTo != "user04":
+            if appSettings.user == "user04":
+                appSettings.sendTo = 'all'
+            else:
+                if appSettings.user04State == 1:
+                    appSettings.sendTo = 'user04'
+        mainDisplay(self)
         event.Skip()

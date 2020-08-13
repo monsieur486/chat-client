@@ -742,6 +742,7 @@
                                                 <property name="window_name"></property>
                                                 <property name="window_style"></property>
                                                 <property name="wrap">-1</property>
+                                                <event name="OnLeftDown">onUser01Deno</event>
                                             </object>
                                         </object>
                                     </object>
@@ -872,6 +873,7 @@
                                                 <property name="window_name"></property>
                                                 <property name="window_style"></property>
                                                 <property name="wrap">-1</property>
+                                                <event name="OnLeftDown">onUser02Deno</event>
                                             </object>
                                         </object>
                                     </object>
@@ -1002,6 +1004,7 @@
                                                 <property name="window_name"></property>
                                                 <property name="window_style"></property>
                                                 <property name="wrap">-1</property>
+                                                <event name="OnLeftDown">onUser03Deno</event>
                                             </object>
                                         </object>
                                     </object>
@@ -1132,6 +1135,7 @@
                                                 <property name="window_name"></property>
                                                 <property name="window_style"></property>
                                                 <property name="wrap">-1</property>
+                                                <event name="OnLeftDown">onUser04Deno</event>
                                             </object>
                                         </object>
                                     </object>
@@ -1260,7 +1264,7 @@
                                         <property name="gripper">0</property>
                                         <property name="hidden">0</property>
                                         <property name="id">wxID_ANY</property>
-                                        <property name="label">Envoyer</property>
+                                        <property name="label">---</property>
                                         <property name="margins"></property>
                                         <property name="markup">0</property>
                                         <property name="max_size"></property>
