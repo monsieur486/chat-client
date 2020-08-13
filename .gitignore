@@ -9,5 +9,3 @@
 /*.po~
 /devAsset/
 /public/settings/luncher.cfg
-appSettings.py
-/appSettings.py.local

@@ -30,9 +30,15 @@ class AppFrame(wx.Frame):
 
         self.menubar1 = wx.MenuBar(0)
         self.m_menu1 = wx.Menu()
-        self.m_menuItem1 = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Quitter" + u"\t" + u"ctrl-q",
-                                       u"Quitter l'application", wx.ITEM_NORMAL)
+        self.m_menuItem1 = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Change Mode" + u"\t" + u"ctrl-m", u"Change Mode",
+                                       wx.ITEM_NORMAL)
         self.m_menu1.Append(self.m_menuItem1)
+
+        self.m_menu1.AppendSeparator()
+
+        self.m_menuItem11 = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Quitter" + u"\t" + u"ctrl-q",
+                                        u"Quitter l'application", wx.ITEM_NORMAL)
+        self.m_menu1.Append(self.m_menuItem11)
 
         self.menubar1.Append(self.m_menu1, u"Menu")
 
@@ -65,8 +71,15 @@ class AppFrame(wx.Frame):
         connexionSide.Add(self.userPwd, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL | wx.EXPAND,
                           5)
 
+        bSizer11 = wx.BoxSizer(wx.HORIZONTAL)
+
         self.cnxBtn = wx.Button(self, wx.ID_ANY, u"Connexion", wx.DefaultPosition, wx.DefaultSize, 0)
-        connexionSide.Add(self.cnxBtn, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+        bSizer11.Add(self.cnxBtn, 1, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL | wx.ALL, 5)
+
+        self.afkBtn = wx.Button(self, wx.ID_ANY, u"AFK", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer11.Add(self.afkBtn, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 5)
+
+        connexionSide.Add(bSizer11, 0, 0, 5)
 
         appPage.Add(connexionSide, 1, wx.ALIGN_CENTER_VERTICAL, 5)
 
@@ -157,9 +170,6 @@ class AppFrame(wx.Frame):
         self.sendText = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
         textBoard.Add(self.sendText, 1, wx.ALL, 5)
 
-        self.afkBtn = wx.Button(self, wx.ID_ANY, u"AFK", wx.DefaultPosition, wx.DefaultSize, 0)
-        textBoard.Add(self.afkBtn, 0, wx.ALL, 5)
-
         mainPage.Add(textBoard, 0, wx.EXPAND, 5)
 
         self.mailBox = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY)
@@ -172,18 +182,26 @@ class AppFrame(wx.Frame):
         self.Centre(wx.BOTH)
 
         # Connect Events
-        self.Bind(wx.EVT_MENU, self.onMenuQuit, id=self.m_menuItem1.GetId())
+        self.Bind(wx.EVT_MENU, self.onMenuChange, id=self.m_menuItem1.GetId())
+        self.Bind(wx.EVT_MENU, self.onMenuQuit, id=self.m_menuItem11.GetId())
         self.userPwd.Bind(wx.EVT_TEXT_ENTER, self.cnxCnxBtn)
         self.cnxBtn.Bind(wx.EVT_BUTTON, self.cnxCnxBtn)
+        self.afkBtn.Bind(wx.EVT_BUTTON, self.onAfkBtn)
         self.user01Kick.Bind(wx.EVT_BUTTON, self.onUser01KickBtn)
         self.user02Kick.Bind(wx.EVT_BUTTON, self.onUser02KickBtn)
         self.user03Kick.Bind(wx.EVT_BUTTON, self.onUser03KickBtn)
         self.sendBtn.Bind(wx.EVT_BUTTON, self.onSendBtn)
         self.sendText.Bind(wx.EVT_TEXT_ENTER, self.onSendBtn)
-        self.afkBtn.Bind(wx.EVT_BUTTON, self.onAfkBtn)
         self.mailBox.Bind(wx.EVT_TEXT, self.onImportChange)
 
         mainDisplay(self)
+
+    def onMenuQuit(self, event):
+        sendMessageToServer(self, 'userDecnx', True)
+        event.Skip()
+
+    def onMenuChange(self, event):
+        event.Skip()
 
     def onImportChange(self, event):
         dataBrute = self.mailBox.GetValue()
@@ -205,10 +223,6 @@ class AppFrame(wx.Frame):
         cnxJSON = jsonpickle.encode(msg, unpicklable=False)
         self.protocol.sendLine(cnxJSON.encode('UTF-8'))
 
-    def onMenuQuit(self, event):
-        sendMessageToServer(self, 'userDecnx', True)
-        event.Skip()
-
     def cnxCnxBtn(self, event):
         userCnx = self.userLogin.GetValue()
         passwordCnx = self.userPwd.GetValue()
@@ -227,7 +241,11 @@ class AppFrame(wx.Frame):
         event.Skip()
 
     def onSendBtn(self, event):
+        appSettings.isLoggedIn = True
+        mainDisplay(self)
         event.Skip()
 
     def onAfkBtn(self, event):
+        appSettings.isLoggedIn = False
+        mainDisplay(self)
         event.Skip()
