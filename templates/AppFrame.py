@@ -5,7 +5,7 @@ import jsonpickle
 import wx.adv
 import queue
 import appSettings
-from appcore.connexion.ChatMsg import ChatMsg
+from appcore.decodeur.ChatMsg import ChatMsg
 from appcore.connexion.UserCnx import UserCnx
 
 from appcore.connexion.sendMessageToServer import sendMessageToServer
@@ -146,8 +146,7 @@ class AppFrame(wx.Frame):
 
         bSizer9 = wx.BoxSizer(wx.VERTICAL)
 
-        self.chatBoard = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
-                                     wx.HSCROLL | wx.TE_MULTILINE | wx.TE_READONLY)
+        self.chatBoard = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_READONLY)
         bSizer9.Add(self.chatBoard, 1, wx.ALL | wx.EXPAND, 5)
 
         bSizer10 = wx.BoxSizer(wx.HORIZONTAL)
@@ -155,7 +154,8 @@ class AppFrame(wx.Frame):
         self.sendBtn = wx.Button(self, wx.ID_ANY, u"Envoyer", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer10.Add(self.sendBtn, 0, wx.ALL, 5)
 
-        self.textMsg = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
+        self.textMsg = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
+                                   wx.TE_PROCESS_ENTER)
         bSizer10.Add(self.textMsg, 1, wx.ALL | wx.EXPAND, 5)
 
         bSizer9.Add(bSizer10, 0, wx.EXPAND, 5)
@@ -233,7 +233,8 @@ class AppFrame(wx.Frame):
 
     def onSendBtn(self, event):
         user = appSettings.user
+        nickname = appSettings.nickname
         msgToSend = self.textMsg.GetValue()
-        sendMessageToServer(self, 'sendMsg', ChatMsg(user, msgToSend))
+        sendMessageToServer(self, 'sendMsg', ChatMsg(user, nickname, msgToSend))
         self.textMsg.SetValue("")
         event.Skip()

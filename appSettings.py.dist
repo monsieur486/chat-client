@@ -9,6 +9,7 @@ PORT_GAME = 12530
 # SETTINGS DEFAULT #####################################################################################################
 locale = 'fr'
 user = "anonyme"
+nickname = "anonyme"
 isLoggedIn = False
 isDemoMode = False
 isDispo = True

@@ -24,6 +24,7 @@ def mainActionMsg(self, changeInfos):
             if appSettings.user == user:
                 appSettings.isLoggedIn = True
                 msg = "Connecté(e) en tant que: " + nickname
+                appSettings.nickname = nickname
                 self.statusBar.SetStatusText(msg, 0)
                 if user == "user01":
                     self.user01Deno.SetLabel("Vous")
