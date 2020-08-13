@@ -22,7 +22,7 @@ class AppFrame(wx.Frame):
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"AppPubSub", pos=wx.DefaultPosition,
-                          size=wx.Size(235, 324), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+                          size=wx.Size(346, 513), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
@@ -141,7 +141,25 @@ class AppFrame(wx.Frame):
 
         appPage.Add(boardSide, 1, wx.ALIGN_CENTER_VERTICAL, 5)
 
-        mainPage.Add(appPage, 1, wx.ALL | wx.EXPAND, 5)
+        mainPage.Add(appPage, 0, wx.ALL | wx.EXPAND, 5)
+
+        bSizer9 = wx.BoxSizer(wx.VERTICAL)
+
+        self.chatBoard = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
+                                     wx.HSCROLL | wx.TE_READONLY)
+        bSizer9.Add(self.chatBoard, 1, wx.ALL | wx.EXPAND, 5)
+
+        bSizer10 = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.sendBtn = wx.Button(self, wx.ID_ANY, u"Envoyer", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer10.Add(self.sendBtn, 0, wx.ALL, 5)
+
+        self.textMsg = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer10.Add(self.textMsg, 1, wx.ALL | wx.EXPAND, 5)
+
+        bSizer9.Add(bSizer10, 0, wx.EXPAND, 5)
+
+        mainPage.Add(bSizer9, 1, wx.EXPAND, 5)
 
         self.mailBox = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY)
         mainPage.Add(self.mailBox, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND, 5)
@@ -159,6 +177,8 @@ class AppFrame(wx.Frame):
         self.cnxBtn.Bind(wx.EVT_BUTTON, self.onCnxBtn)
         self.dispoBtn.Bind(wx.EVT_BUTTON, self.onDispoBtn)
         self.afkBtn.Bind(wx.EVT_BUTTON, self.onAfkBtn)
+        self.sendBtn.Bind(wx.EVT_BUTTON, self.onSendBtn)
+        self.textMsg.Bind(wx.EVT_TEXT_ENTER, self.onSendBtn)
         self.mailBox.Bind(wx.EVT_TEXT, self.onImportChange)
 
         mainDisplay(self)
@@ -208,4 +228,7 @@ class AppFrame(wx.Frame):
 
     def onDispoBtn(self, event):
         sendMessageToServer(self, 'userDispo', appSettings.user)
+        event.Skip()
+
+    def onSendBtn(self, event):
         event.Skip()

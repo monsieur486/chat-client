@@ -71,6 +71,9 @@ def mainDisplay(self):
         if appSettings.user04State == 2:
             self.user04Led.SetBitmap(wx.Bitmap(u"public/icons/16x16_led_red.png", wx.BITMAP_TYPE_ANY))
 
+        self.sendBtn.Enable()
+        self.textMsg.Enable()
+
     else:
         self.afkBtn.Hide()
         self.dispoBtn.Hide()
@@ -89,5 +92,8 @@ def mainDisplay(self):
         self.user02Deno.Hide()
         self.user03Deno.Hide()
         self.user04Deno.Hide()
+
+        self.sendBtn.Disable()
+        self.textMsg.Disable()
 
     self.Layout()
