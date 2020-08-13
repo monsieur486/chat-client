@@ -5,6 +5,11 @@ import appSettings
 
 
 def mainDisplay(self):
+    if appSettings.isDemoMode:
+        self.mailBox.Show()
+    else:
+        self.mailBox.Hide()
+
     if appSettings.isLoggedIn:
         self.userIcon.Hide()
         self.userLogin.Hide()

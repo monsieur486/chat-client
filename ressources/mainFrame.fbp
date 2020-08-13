@@ -84,16 +84,30 @@
                     <object class="wxMenuItem" expanded="0">
                         <property name="bitmap"></property>
                         <property name="checked">0</property>
+                        <property name="enabled">0</property>
+                        <property name="help">Déconnexion</property>
+                        <property name="id">wxID_ANY</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">Déconnexion</property>
+                        <property name="name">menuDecnx</property>
+                        <property name="permission">none</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">onMenuDecnx</event>
+                    </object>
+                    <object class="wxMenuItem" expanded="0">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
                         <property name="enabled">1</property>
                         <property name="help">Change Mode</property>
                         <property name="id">wxID_ANY</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">Change Mode</property>
-                        <property name="name">m_menuItem1</property>
+                        <property name="name">menuChangeMode</property>
                         <property name="permission">none</property>
-                        <property name="shortcut">ctrl-m</property>
+                        <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
-                        <event name="OnMenuSelection">onMenuChange</event>
+                        <event name="OnMenuSelection">onMenuChangeMode</event>
                     </object>
                     <object class="separator" expanded="0">
                         <property name="name">m_separator1</property>
@@ -107,7 +121,7 @@
                         <property name="id">wxID_ANY</property>
                         <property name="kind">wxITEM_NORMAL</property>
                         <property name="label">Quitter</property>
-                        <property name="name">m_menuItem11</property>
+                        <property name="name">menuQuit</property>
                         <property name="permission">none</property>
                         <property name="shortcut">ctrl-q</property>
                         <property name="unchecked_bitmap"></property>
@@ -463,7 +477,7 @@
                                                 <property name="window_extra_style"></property>
                                                 <property name="window_name"></property>
                                                 <property name="window_style"></property>
-                                                <event name="OnButtonClick">cnxCnxBtn</event>
+                                                <event name="OnButtonClick">onCnxBtn</event>
                                             </object>
                                         </object>
                                         <object class="sizeritem" expanded="0">

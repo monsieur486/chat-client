@@ -9,7 +9,7 @@ from appcore.connexion.UserCnx import UserCnx
 
 from appcore.connexion.sendMessageToServer import sendMessageToServer
 from appcore.decodeur.decodeMsg import decodeMsg
-from appcore.display.firstDisplay import mainDisplay
+from appcore.display.mainDisplay import mainDisplay
 
 jobs = queue.Queue()
 
@@ -30,15 +30,18 @@ class AppFrame(wx.Frame):
 
         self.menubar1 = wx.MenuBar(0)
         self.m_menu1 = wx.Menu()
-        self.m_menuItem1 = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Change Mode" + u"\t" + u"ctrl-m", u"Change Mode",
-                                       wx.ITEM_NORMAL)
-        self.m_menu1.Append(self.m_menuItem1)
+        self.menuDecnx = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Déconnexion", u"Déconnexion", wx.ITEM_NORMAL)
+        self.m_menu1.Append(self.menuDecnx)
+        self.menuDecnx.Enable(False)
+
+        self.menuChangeMode = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Change Mode", u"Change Mode", wx.ITEM_NORMAL)
+        self.m_menu1.Append(self.menuChangeMode)
 
         self.m_menu1.AppendSeparator()
 
-        self.m_menuItem11 = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Quitter" + u"\t" + u"ctrl-q",
-                                        u"Quitter l'application", wx.ITEM_NORMAL)
-        self.m_menu1.Append(self.m_menuItem11)
+        self.menuQuit = wx.MenuItem(self.m_menu1, wx.ID_ANY, u"Quitter" + u"\t" + u"ctrl-q", u"Quitter l'application",
+                                    wx.ITEM_NORMAL)
+        self.m_menu1.Append(self.menuQuit)
 
         self.menubar1.Append(self.m_menu1, u"Menu")
 
@@ -182,10 +185,11 @@ class AppFrame(wx.Frame):
         self.Centre(wx.BOTH)
 
         # Connect Events
-        self.Bind(wx.EVT_MENU, self.onMenuChange, id=self.m_menuItem1.GetId())
-        self.Bind(wx.EVT_MENU, self.onMenuQuit, id=self.m_menuItem11.GetId())
-        self.userPwd.Bind(wx.EVT_TEXT_ENTER, self.cnxCnxBtn)
-        self.cnxBtn.Bind(wx.EVT_BUTTON, self.cnxCnxBtn)
+        self.Bind(wx.EVT_MENU, self.onMenuDecnx, id=self.menuDecnx.GetId())
+        self.Bind(wx.EVT_MENU, self.onMenuChangeMode, id=self.menuChangeMode.GetId())
+        self.Bind(wx.EVT_MENU, self.onMenuQuit, id=self.menuQuit.GetId())
+        self.userPwd.Bind(wx.EVT_TEXT_ENTER, self.onCnxBtn)
+        self.cnxBtn.Bind(wx.EVT_BUTTON, self.onCnxBtn)
         self.afkBtn.Bind(wx.EVT_BUTTON, self.onAfkBtn)
         self.user01Kick.Bind(wx.EVT_BUTTON, self.onUser01KickBtn)
         self.user02Kick.Bind(wx.EVT_BUTTON, self.onUser02KickBtn)
@@ -195,13 +199,6 @@ class AppFrame(wx.Frame):
         self.mailBox.Bind(wx.EVT_TEXT, self.onImportChange)
 
         mainDisplay(self)
-
-    def onMenuQuit(self, event):
-        sendMessageToServer(self, 'userDecnx', True)
-        event.Skip()
-
-    def onMenuChange(self, event):
-        event.Skip()
 
     def onImportChange(self, event):
         dataBrute = self.mailBox.GetValue()
@@ -223,11 +220,26 @@ class AppFrame(wx.Frame):
         cnxJSON = jsonpickle.encode(msg, unpicklable=False)
         self.protocol.sendLine(cnxJSON.encode('UTF-8'))
 
-    def cnxCnxBtn(self, event):
+    def onMenuQuit(self, event):
+        sendMessageToServer(self, 'userQuit', True)
+        event.Skip()
+
+    def onMenuChangeMode(self, event):
+        if appSettings.isDemoMode:
+            appSettings.isDemoMode = False
+        else:
+            appSettings.isDemoMode = True
+        mainDisplay(self)
+        event.Skip()
+
+    def onMenuDecnx(self, event):
+        sendMessageToServer(self, 'userDecnx', True)
+        event.Skip()
+
+    def onCnxBtn(self, event):
         userCnx = self.userLogin.GetValue()
         passwordCnx = self.userPwd.GetValue()
         appSettings.user = userCnx
-        appSettings.password = passwordCnx
         sendMessageToServer(self, 'userCnx', UserCnx(userCnx, passwordCnx))
         event.Skip()
 
