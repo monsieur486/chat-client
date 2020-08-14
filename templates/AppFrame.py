@@ -9,6 +9,7 @@ from appcore.decodeur.ChatMsg import ChatMsg
 from appcore.connexion.UserCnx import UserCnx
 
 from appcore.connexion.sendMessageToServer import sendMessageToServer
+from appcore.decodeur.PrivateChatMsg import PrivateChatMsg
 from appcore.decodeur.decodeMsg import decodeMsg
 from appcore.display.mainDisplay import mainDisplay
 
@@ -241,11 +242,15 @@ class AppFrame(wx.Frame):
         nickname = appSettings.nickname
         msgToSend = self.textMsg.GetValue()
         if msgToSend:
-            sendMessageToServer(self, 'sendMsg', ChatMsg(user, nickname, msgToSend))
+            if appSettings.sendTo == "all":
+                sendMessageToServer(self, 'sendMsg', ChatMsg(user, nickname, msgToSend))
+            else:
+                recipient = appSettings.sendTo
+                sendMessageToServer(self, 'sendPrivateMsg', PrivateChatMsg(recipient, user, nickname, msgToSend))
             self.textMsg.SetValue("")
         event.Skip()
 
-    def onUser01Deno(self, event): 
+    def onUser01Deno(self, event):
         if appSettings.sendTo != "user01":
             if appSettings.user == "user01":
                 appSettings.sendTo = 'all'
