@@ -108,19 +108,28 @@ def mainDisplay(self):
                 self.textMsg.SetValue("")
 
         if appSettings.sendTo == "all":
-            self.sendBtn.SetLabel("Envoyer")
+            self.sendBtn.Show()
+            self.sendPrivateBtn.Hide()
 
         if appSettings.sendTo == "user01":
-            self.sendBtn.SetLabel("Poste 1")
+            self.sendBtn.Hide()
+            self.sendPrivateBtn.SetLabel("Poste 1")
+            self.sendPrivateBtn.Show()
 
         if appSettings.sendTo == "user02":
-            self.sendBtn.SetLabel("Poste 2")
+            self.sendBtn.Hide()
+            self.sendPrivateBtn.SetLabel("Poste 2")
+            self.sendPrivateBtn.Show()
 
         if appSettings.sendTo == "user03":
-            self.sendBtn.SetLabel("Poste 3")
+            self.sendBtn.Hide()
+            self.sendPrivateBtn.SetLabel("Poste 3")
+            self.sendPrivateBtn.Show()
 
         if appSettings.sendTo == "user04":
-            self.sendBtn.SetLabel("Poste 4")
+            self.sendBtn.Hide()
+            self.sendPrivateBtn.SetLabel("Poste 4")
+            self.sendPrivateBtn.Show()
 
         self.sendBtn.Enable()
         self.textMsg.Enable()

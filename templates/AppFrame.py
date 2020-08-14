@@ -24,7 +24,7 @@ class AppFrame(wx.Frame):
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"AppPubSub", pos=wx.DefaultPosition,
-                          size=wx.Size(368, 513), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+                          size=wx.Size(400, 513), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
@@ -153,8 +153,11 @@ class AppFrame(wx.Frame):
 
         bSizer10 = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.sendBtn = wx.Button(self, wx.ID_ANY, u"---", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.sendBtn = wx.Button(self, wx.ID_ANY, u"Envoyer", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer10.Add(self.sendBtn, 0, wx.ALL, 5)
+
+        self.sendPrivateBtn = wx.Button(self, wx.ID_ANY, u"---", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer10.Add(self.sendPrivateBtn, 0, wx.ALL, 5)
 
         self.textMsg = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
                                    wx.TE_PROCESS_ENTER)
@@ -185,6 +188,7 @@ class AppFrame(wx.Frame):
         self.user03Deno.Bind(wx.EVT_LEFT_DOWN, self.onUser03Deno)
         self.user04Deno.Bind(wx.EVT_LEFT_DOWN, self.onUser04Deno)
         self.sendBtn.Bind(wx.EVT_BUTTON, self.onSendBtn)
+        self.sendPrivateBtn.Bind(wx.EVT_BUTTON, self.onSendPrivateBtn)
         self.textMsg.Bind(wx.EVT_TEXT_ENTER, self.onSendBtn)
         self.mailBox.Bind(wx.EVT_TEXT, self.onImportChange)
 
@@ -242,11 +246,17 @@ class AppFrame(wx.Frame):
         nickname = appSettings.nickname
         msgToSend = self.textMsg.GetValue()
         if msgToSend:
-            if appSettings.sendTo == "all":
-                sendMessageToServer(self, 'sendMsg', ChatMsg(user, nickname, msgToSend))
-            else:
-                recipient = appSettings.sendTo
-                sendMessageToServer(self, 'sendPrivateMsg', PrivateChatMsg(recipient, user, nickname, msgToSend))
+            sendMessageToServer(self, 'sendMsg', ChatMsg(user, nickname, msgToSend))
+            self.textMsg.SetValue("")
+        event.Skip()
+
+    def onSendPrivateBtn(self, event):
+        user = appSettings.user
+        nickname = appSettings.nickname
+        recipientId = appSettings.sendTo
+        msgToSend = self.textMsg.GetValue()
+        if msgToSend:
+            sendMessageToServer(self, 'sendPrivateMsg', PrivateChatMsg(recipientId, user, nickname, msgToSend))
             self.textMsg.SetValue("")
         event.Skip()
 
