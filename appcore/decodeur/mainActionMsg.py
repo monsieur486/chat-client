@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
-import wx
+
 
 import appSettings
+import time
+
 from appcore.display.mainDisplay import mainDisplay
+
+
+def t():
+    return "[" + time.strftime("%H:%M:%S") + "] "
 
 
 def mainActionMsg(self, changeInfos):
@@ -15,6 +21,8 @@ def mainActionMsg(self, changeInfos):
     appSettings.user02State = statesUsers['user02State']
     appSettings.user03State = statesUsers['user03State']
     appSettings.user04State = statesUsers['user04State']
+
+    msg = ""
 
     if action == "win":
         if appSettings.isLoggedIn:
@@ -59,5 +67,9 @@ def mainActionMsg(self, changeInfos):
                 msg = nickname + " est disponible"
 
             self.statusBar.SetStatusText(msg, 0)
+
+    val = self.chatBoard.GetValue()
+    self.chatBoard.SetValue(val + t() + msg + '\n')
+    self.chatBoard.SetInsertionPointEnd()
 
     mainDisplay(self)

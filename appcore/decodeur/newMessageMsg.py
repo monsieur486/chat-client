@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
 
-import wx
-
+import time
 import appSettings
+
+
+def t():
+    return "[" + time.strftime("%H:%M:%S") + "] "
 
 
 def newMessageMsg(self, chatMsg):
@@ -18,6 +21,6 @@ def newMessageMsg(self, chatMsg):
             data = nickname + ": " + msgToSend + '\n'
 
         val = self.chatBoard.GetValue()
-        self.chatBoard.SetValue(val + data)
+        self.chatBoard.SetValue(val + t() + data)
         self.chatBoard.SetInsertionPointEnd()
         self.Layout()

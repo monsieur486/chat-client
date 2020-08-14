@@ -28,21 +28,6 @@ def mainDisplay(self):
         self.user03Deno.Show()
         self.user04Deno.Show()
 
-        if appSettings.sendTo == "all":
-            self.sendBtn.SetLabel("Envoyer")
-
-        if appSettings.sendTo == "user01":
-            self.sendBtn.SetLabel("Poste 1")
-
-        if appSettings.sendTo == "user02":
-            self.sendBtn.SetLabel("Poste 2")
-
-        if appSettings.sendTo == "user03":
-            self.sendBtn.SetLabel("Poste 3")
-
-        if appSettings.sendTo == "user04":
-            self.sendBtn.SetLabel("Poste 4")
-
         if appSettings.isDispo:
             self.afkBtn.Show()
             self.dispoBtn.Hide()
@@ -121,6 +106,21 @@ def mainDisplay(self):
             if appSettings.sendTo == "user04":
                 appSettings.sendTo = "all"
                 self.textMsg.SetValue("")
+
+        if appSettings.sendTo == "all":
+            self.sendBtn.SetLabel("Envoyer")
+
+        if appSettings.sendTo == "user01":
+            self.sendBtn.SetLabel("Poste 1")
+
+        if appSettings.sendTo == "user02":
+            self.sendBtn.SetLabel("Poste 2")
+
+        if appSettings.sendTo == "user03":
+            self.sendBtn.SetLabel("Poste 3")
+
+        if appSettings.sendTo == "user04":
+            self.sendBtn.SetLabel("Poste 4")
 
         self.sendBtn.Enable()
         self.textMsg.Enable()
