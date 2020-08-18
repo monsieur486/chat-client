@@ -7,13 +7,12 @@ PORT_GAME = 12530
 
 # SETTINGS DEFAULT #####################################################################################################
 locale = 'fr'
-user = "anonyme"
-nickname = "anonyme"
+userID = "anonyme"
+userNickname = "anonyme"
 isLoggedIn = False
 isDemoMode = False
-isDispo = True
-sendTo = "all"
-user01State = 0
-user02State = 0
-user03State = 0
-user04State = 0
+user01State = False
+user02State = False
+user03State = False
+user04State = False
+bordLed = 1
