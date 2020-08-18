@@ -11,16 +11,16 @@ def t():
 
 def newMessageMsg(self, chatMsg):
     if appSettings.isLoggedIn:
-        user = chatMsg['user']
+        userID = chatMsg['userID']
         nickname = chatMsg['nickname']
         msgToSend = chatMsg['msgToSend']
 
-        if appSettings.user == user:
+        if appSettings.userID == userID:
             data = "Vous: " + msgToSend + '\n'
         else:
             data = nickname + ": " + msgToSend + '\n'
 
-        val = self.chatBoard.GetValue()
-        self.chatBoard.SetValue(val + t() + data)
-        self.chatBoard.SetInsertionPointEnd()
+        val = self.chatTxt.GetValue()
+        self.chatTxt.SetValue(val + t() + data)
+        self.chatTxt.SetInsertionPointEnd()
         self.Layout()

@@ -49,9 +49,6 @@ class AppFrame ( wx.Frame ):
     def onPingBtn( self, event ):
         event.Skip()
 
-    def onSoloPingBtn( self, event ):
-        event.Skip()
-
     def onSendBtn( self, event ):
         event.Skip()
 
