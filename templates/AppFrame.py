@@ -23,7 +23,7 @@ class AppFrame(wx.Frame):
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"AppPubSub", pos=wx.DefaultPosition,
-                          size=wx.Size(348, 548), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
+                          size=wx.Size(348, 700), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.DefaultSize, wx.DefaultSize)
 
@@ -138,6 +138,99 @@ class AppFrame(wx.Frame):
 
         mainPage.Add(appPage, 0, wx.ALL | wx.EXPAND, 5)
 
+        bSizer132 = wx.BoxSizer(wx.VERTICAL)
+
+        bSizer142 = wx.BoxSizer(wx.HORIZONTAL)
+
+        m_choice1Choices = [u"Produit 01", u"Produit 02", u"Produit 03"]
+        self.m_choice1 = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice1Choices, 0)
+        self.m_choice1.SetSelection(0)
+        bSizer142.Add(self.m_choice1, 0, wx.ALL, 5)
+
+        self.m_textCtrl4 = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
+                                       wx.TE_PROCESS_ENTER)
+        bSizer142.Add(self.m_textCtrl4, 0, wx.ALL, 5)
+
+        self.collectBtn = wx.Button(self, wx.ID_ANY, u"Collecter", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer142.Add(self.collectBtn, 1, wx.ALL | wx.EXPAND, 5)
+
+        bSizer132.Add(bSizer142, 0, wx.EXPAND, 5)
+
+        bSizer151 = wx.BoxSizer(wx.HORIZONTAL)
+
+        bSizer132.Add(bSizer151, 0, wx.ALL | wx.EXPAND, 5)
+
+        bSizer19 = wx.BoxSizer(wx.HORIZONTAL)
+
+        bSizer20 = wx.BoxSizer(wx.VERTICAL)
+
+        self.pdt01Deno = wx.StaticText(self, wx.ID_ANY, u"PDT01 (0)", wx.DefaultPosition, wx.Size(110, -1), 0)
+        self.pdt01Deno.Wrap(-1)
+
+        bSizer20.Add(self.pdt01Deno, 0, wx.ALIGN_LEFT | wx.ALL, 5)
+
+        bSizer19.Add(bSizer20, 0, wx.ALIGN_CENTER_VERTICAL, 5)
+
+        bSizer15111 = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.gaugePdt01 = wx.Gauge(self, wx.ID_ANY, 100, wx.DefaultPosition, wx.Size(-1, -1), wx.GA_HORIZONTAL)
+        self.gaugePdt01.SetValue(60)
+        self.gaugePdt01.SetToolTip(u"Tooltip")
+
+        bSizer15111.Add(self.gaugePdt01, 2, wx.ALL, 5)
+
+        bSizer19.Add(bSizer15111, 1, wx.EXPAND, 5)
+
+        bSizer132.Add(bSizer19, 0, wx.EXPAND, 5)
+
+        bSizer191 = wx.BoxSizer(wx.HORIZONTAL)
+
+        bSizer201 = wx.BoxSizer(wx.VERTICAL)
+
+        self.pdt02Deno = wx.StaticText(self, wx.ID_ANY, u"PDT02 (0)", wx.DefaultPosition, wx.Size(110, -1), 0)
+        self.pdt02Deno.Wrap(-1)
+
+        bSizer201.Add(self.pdt02Deno, 0, wx.ALIGN_LEFT | wx.ALL, 5)
+
+        bSizer191.Add(bSizer201, 0, wx.ALIGN_CENTER_VERTICAL, 5)
+
+        bSizer151111 = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.gaugePdt02 = wx.Gauge(self, wx.ID_ANY, 100, wx.DefaultPosition, wx.Size(-1, -1), wx.GA_HORIZONTAL)
+        self.gaugePdt02.SetValue(60)
+        self.gaugePdt02.SetToolTip(u"Tooltip")
+
+        bSizer151111.Add(self.gaugePdt02, 1, wx.ALL, 5)
+
+        bSizer191.Add(bSizer151111, 1, wx.EXPAND, 5)
+
+        bSizer132.Add(bSizer191, 1, wx.EXPAND, 5)
+
+        bSizer1911 = wx.BoxSizer(wx.HORIZONTAL)
+
+        bSizer2011 = wx.BoxSizer(wx.VERTICAL)
+
+        self.pdt03Deno = wx.StaticText(self, wx.ID_ANY, u"PDT03 (0)", wx.DefaultPosition, wx.Size(110, -1), 0)
+        self.pdt03Deno.Wrap(-1)
+
+        bSizer2011.Add(self.pdt03Deno, 0, wx.ALIGN_LEFT | wx.ALL, 5)
+
+        bSizer1911.Add(bSizer2011, 0, wx.ALIGN_CENTER_VERTICAL, 5)
+
+        bSizer1511111 = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.gaugePdt03 = wx.Gauge(self, wx.ID_ANY, 100, wx.DefaultPosition, wx.Size(-1, -1), wx.GA_HORIZONTAL)
+        self.gaugePdt03.SetValue(60)
+        self.gaugePdt03.SetToolTip(u"Tooltip")
+
+        bSizer1511111.Add(self.gaugePdt03, 1, wx.ALL, 5)
+
+        bSizer1911.Add(bSizer1511111, 1, wx.EXPAND, 5)
+
+        bSizer132.Add(bSizer1911, 1, wx.EXPAND, 5)
+
+        mainPage.Add(bSizer132, 0, wx.EXPAND, 5)
+
         bSizer13 = wx.BoxSizer(wx.VERTICAL)
 
         bSizer14 = wx.BoxSizer(wx.HORIZONTAL)
@@ -180,6 +273,8 @@ class AppFrame(wx.Frame):
         self.pingUser02Btn.Bind(wx.EVT_BUTTON, self.onPingUser02Btn)
         self.pingUser03Btn.Bind(wx.EVT_BUTTON, self.onPingUser03Btn)
         self.pingBtn.Bind(wx.EVT_BUTTON, self.onPingBtn)
+        self.m_textCtrl4.Bind(wx.EVT_TEXT_ENTER, self.onCollectBtn)
+        self.collectBtn.Bind(wx.EVT_BUTTON, self.onCollectBtn)
         self.sendBtn.Bind(wx.EVT_BUTTON, self.onSendBtn)
         self.msgText.Bind(wx.EVT_TEXT_ENTER, self.onSendBtn)
         self.mailBox.Bind(wx.EVT_TEXT, self.onImportChange)
@@ -259,6 +354,9 @@ class AppFrame(wx.Frame):
             state = 1
         appSettings.bordLed = state
         mainDisplay(self)
+        event.Skip()
+
+    def onCollectBtn( self, event ):
         event.Skip()
 
     def onSendBtn(self, event):

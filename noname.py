@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.9.0 Jul 22 2020)
+## Python code generated with wxFormBuilder (version 3.9.0 Jul 30 2020)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -48,6 +48,10 @@ class AppFrame ( wx.Frame ):
 
     def onPingBtn( self, event ):
         event.Skip()
+
+    def onCollectBtn( self, event ):
+        event.Skip()
+
 
     def onSendBtn( self, event ):
         event.Skip()
