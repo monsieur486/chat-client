@@ -148,8 +148,8 @@ class AppFrame(wx.Frame):
         self.productList.SetSelection(0)
         bSizer142.Add(self.productList, 0, wx.ALL, 5)
 
-        self.productNbr = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
-                                      wx.TE_PROCESS_ENTER)
+        self.productNbr = wx.SpinCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
+                                      wx.SP_ARROW_KEYS | wx.TE_PROCESS_ENTER, 0, 99999, 0)
         bSizer142.Add(self.productNbr, 0, wx.ALL, 5)
 
         self.collectBtn = wx.Button(self, wx.ID_ANY, u"Collecter", wx.DefaultPosition, wx.DefaultSize, 0)
