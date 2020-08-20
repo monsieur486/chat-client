@@ -362,7 +362,7 @@ class AppFrame(wx.Frame):
             productID = self.productList.GetSelection()
             productQty = int(self.productNbr.GetValue())
             collectMsg = CollectMsg(productID, productQty)
-            self.productNbr.SetValue("")
+            self.productNbr.SetValue(0)
             if productQty:
                 sendMessageToServer(self, 'productAdd', collectMsg)
 

@@ -19,3 +19,4 @@ bordLed = 1
 product01 = 0
 product02 = 0
 product03 = 0
+pingNb = 0
