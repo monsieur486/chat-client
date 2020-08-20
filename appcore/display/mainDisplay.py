@@ -99,8 +99,6 @@ def mainDisplay(self):
 
     totalProduct = appSettings.product01 + appSettings.product02 + appSettings.product03
 
-    print("PDT:" + str(totalProduct))
-
     if totalProduct == 0:
         txProduct01 = 0
         txProduct02 = 0
