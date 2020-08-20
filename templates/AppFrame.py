@@ -11,6 +11,7 @@ from appcore.connexion.UserCnx import UserCnx
 from appcore.connexion.sendMessageToServer import sendMessageToServer
 from appcore.decodeur.decodeMsg import decodeMsg
 from appcore.display.mainDisplay import mainDisplay
+from appcore.encodeur.CollectMsg import CollectMsg
 
 jobs = queue.Queue()
 
@@ -142,14 +143,14 @@ class AppFrame(wx.Frame):
 
         bSizer142 = wx.BoxSizer(wx.HORIZONTAL)
 
-        m_choice1Choices = [u"Produit 01", u"Produit 02", u"Produit 03"]
-        self.m_choice1 = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice1Choices, 0)
-        self.m_choice1.SetSelection(0)
-        bSizer142.Add(self.m_choice1, 0, wx.ALL, 5)
+        productListChoices = [u"Produit 01", u"Produit 02", u"Produit 03"]
+        self.productList = wx.Choice(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, productListChoices, 0)
+        self.productList.SetSelection(0)
+        bSizer142.Add(self.productList, 0, wx.ALL, 5)
 
-        self.m_textCtrl4 = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
-                                       wx.TE_PROCESS_ENTER)
-        bSizer142.Add(self.m_textCtrl4, 0, wx.ALL, 5)
+        self.productNbr = wx.TextCtrl(self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize,
+                                      wx.TE_PROCESS_ENTER)
+        bSizer142.Add(self.productNbr, 0, wx.ALL, 5)
 
         self.collectBtn = wx.Button(self, wx.ID_ANY, u"Collecter", wx.DefaultPosition, wx.DefaultSize, 0)
         bSizer142.Add(self.collectBtn, 1, wx.ALL | wx.EXPAND, 5)
@@ -273,7 +274,7 @@ class AppFrame(wx.Frame):
         self.pingUser02Btn.Bind(wx.EVT_BUTTON, self.onPingUser02Btn)
         self.pingUser03Btn.Bind(wx.EVT_BUTTON, self.onPingUser03Btn)
         self.pingBtn.Bind(wx.EVT_BUTTON, self.onPingBtn)
-        self.m_textCtrl4.Bind(wx.EVT_TEXT_ENTER, self.onCollectBtn)
+        self.productNbr.Bind(wx.EVT_TEXT_ENTER, self.onCollectBtn)
         self.collectBtn.Bind(wx.EVT_BUTTON, self.onCollectBtn)
         self.sendBtn.Bind(wx.EVT_BUTTON, self.onSendBtn)
         self.msgText.Bind(wx.EVT_TEXT_ENTER, self.onSendBtn)
@@ -356,7 +357,15 @@ class AppFrame(wx.Frame):
         mainDisplay(self)
         event.Skip()
 
-    def onCollectBtn( self, event ):
+    def onCollectBtn(self, event):
+        if self.productNbr.GetValue():
+            productID = self.productList.GetSelection()
+            productQty = int(self.productNbr.GetValue())
+            collectMsg = CollectMsg(productID, productQty)
+            self.productNbr.SetValue("")
+            if productQty:
+                sendMessageToServer(self, 'productAdd', collectMsg)
+
         event.Skip()
 
     def onSendBtn(self, event):

@@ -15,6 +15,9 @@ def mainDisplay(self):
         self.pingBtn.Enable()
         self.sendBtn.Enable()
         self.msgText.Enable()
+        self.productList.Enable()
+        self.productNbr.Enable()
+        self.collectBtn.Enable()
     else:
         self.pingBtn.Disable()
         self.sendBtn.Disable()
@@ -23,6 +26,9 @@ def mainDisplay(self):
         self.pingUser01Btn.Disable()
         self.pingUser02Btn.Disable()
         self.pingUser03Btn.Disable()
+        self.productList.Disable()
+        self.productNbr.Disable()
+        self.collectBtn.Disable()
 
     self.cnxBtn01.Disable()
     self.cnxBtn02.Disable()
@@ -90,5 +96,30 @@ def mainDisplay(self):
 
     if appSettings.bordLed == 3:
         self.trafficLight.SetBitmap(wx.Bitmap(u"public/icons/feu03.png", wx.BITMAP_TYPE_ANY))
+
+    totalProduct = appSettings.product01 + appSettings.product02 + appSettings.product03
+
+    print("PDT:" + str(totalProduct))
+
+    if totalProduct == 0:
+        txProduct01 = 0
+        txProduct02 = 0
+        txProduct03 = 0
+    else:
+        txProduct01 = round(appSettings.product01 / totalProduct * 100)
+        txProduct02 = round(appSettings.product02 / totalProduct * 100)
+        txProduct03 = round(appSettings.product03 / totalProduct * 100)
+        
+    self.pdt01Deno.SetLabel(u"PDT01 (" + str(appSettings.product01) + u")")
+    self.gaugePdt01.SetValue(txProduct01)
+    self.gaugePdt01.SetToolTip(str(txProduct01)+u"%")
+    
+    self.pdt02Deno.SetLabel(u"PDT02 (" + str(appSettings.product02) + u")")
+    self.gaugePdt02.SetValue(txProduct02)
+    self.gaugePdt02.SetToolTip(str(txProduct02)+u"%")
+    
+    self.pdt03Deno.SetLabel(u"PDT03 (" + str(appSettings.product03) + u")")
+    self.gaugePdt03.SetValue(txProduct03)
+    self.gaugePdt03.SetToolTip(str(txProduct03)+u"%")
 
     self.Layout()

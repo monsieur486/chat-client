@@ -15,3 +15,6 @@ user01State = False
 user02State = False
 user03State = False
 bordLed = 1
+product01 = 0
+product02 = 0
+product03 = 0
